@@ -1,7 +1,5 @@
 `timescale 1ns/1ps
-// ============================================================
-// EX/MEM pipeline register
-// ============================================================
+
 module ex_mem_register (
     input  wire        clk,
     input  wire        reset,
@@ -9,10 +7,10 @@ module ex_mem_register (
     input  wire        RegWrite_in, MemRead_in, MemWrite_in,
     input  wire [1:0]  MemtoReg_in,
     input  wire [31:0] ALUResult_in,
-    input  wire [31:0] WriteData_in,   // forwarded rs2 value (store data)
+    input  wire [31:0] WriteData_in,   
     input  wire [31:0] PCPlus4_in,
     input  wire [4:0]  Rd_in,
-    input  wire [2:0]  Funct3_in,      // for byte/half load-store sizing
+    input  wire [2:0]  Funct3_in,     
 
     output reg          RegWrite_out, MemRead_out, MemWrite_out,
     output reg  [1:0]   MemtoReg_out,
