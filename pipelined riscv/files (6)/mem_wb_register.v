@@ -1,7 +1,4 @@
 `timescale 1ns/1ps
-// ============================================================
-// MEM/WB pipeline register
-// ============================================================
 module mem_wb_register (
     input  wire        clk,
     input  wire        reset,
