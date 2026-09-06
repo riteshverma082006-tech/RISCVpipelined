@@ -1,7 +1,5 @@
 `timescale 1ns/1ps
-// ============================================================
-// PC register: updates on clock unless stalled; resets to 0.
-// ============================================================
+
 module pc_register (
     input  wire        clk,
     input  wire        reset,
@@ -17,9 +15,6 @@ module pc_register (
     end
 endmodule
 
-// ============================================================
-// Generic adder (used for PC+4, and for PC+imm branch/jump target)
-// ============================================================
 module adder #(parameter WIDTH = 32) (
     input  wire [WIDTH-1:0] a,
     input  wire [WIDTH-1:0] b,
