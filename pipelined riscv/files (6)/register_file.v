@@ -1,8 +1,5 @@
 `timescale 1ns/1ps
-// ============================================================
-// Registers (ID stage read, WB stage write - "register file with
-// write-first" so a same-cycle WB->ID read gets the new value)
-// ============================================================
+
 module register_file (
     input  wire        clk,
     input  wire        reset,
@@ -31,7 +28,7 @@ module register_file (
         end
     end
 
-    // write-first read (avoids needing extra WB->ID forwarding paths)
+    // write-first read 
     assign ReadData1 = (RS1 == 5'd0) ? 32'h0 :
                         (RegWrite && RD == RS1 && RD != 5'd0) ? WriteData : regs[RS1];
     assign ReadData2 = (RS2 == 5'd0) ? 32'h0 :
