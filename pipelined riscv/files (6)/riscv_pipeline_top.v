@@ -1,11 +1,6 @@
 `timescale 1ns/1ps
 `include "defines.vh"
-// ============================================================================
-// riscv_pipeline_top
-//   5-stage RV32I pipeline: IF -> ID -> EX -> MEM -> WB
-//   Full forwarding (EX-stage), load-use stall, branch/jump resolved in EX
-//   with a 2-instruction flush (IF/ID + ID/EX).
-// ============================================================================
+
 module riscv_pipeline_top #(
     parameter IMEM_INIT_FILE = ""
 )(
@@ -13,7 +8,7 @@ module riscv_pipeline_top #(
     input  wire reset
 );
 
-    // ============================ IF stage =================================
+    
     wire [31:0] pc_out;
     wire [31:0] pc_plus4;
     wire [31:0] pc_next;
@@ -39,10 +34,10 @@ module riscv_pipeline_top #(
         .Inst_Addr(pc_out), .instruction(instruction_if)
     );
 
-    // flush IF/ID whenever a branch/jump is resolved taken in EX
+   
     assign flush_if_id = (PCSrc != `PC_PLUS4);
 
-    // ============================ IF/ID =====================================
+   
     wire [31:0] instr_id, pc_id, pcplus4_id;
 
     if_id_register u_if_id (
@@ -51,7 +46,7 @@ module riscv_pipeline_top #(
         .instruction_out(instr_id), .pc_out(pc_id), .pc_plus4_out(pcplus4_id)
     );
 
-    // ============================ ID stage ==================================
+  
     wire [6:0] opcode_id;
     wire [4:0] rs1_id, rs2_id, rd_id;
     wire [2:0] funct3_id;
@@ -92,7 +87,7 @@ module riscv_pipeline_top #(
         .instruction(instr_id), .ImmSrc(ImmSrc_id), .imm_data(imm_id)
     );
 
-    // ---- Hazard detection (load-use) ----
+ 
     wire ID_EX_MemRead_probe;
     wire [4:0] ID_EX_Rd_probe;
     wire bubble_from_hazard;
@@ -104,12 +99,10 @@ module riscv_pipeline_top #(
         .PCWrite(PCWrite), .IF_ID_Write(), .stall(stall_if_id), .bubble(bubble_from_hazard)
     );
 
-    // The instruction currently in ID (about to latch into ID/EX) must also be
-    // squashed the same cycle a branch/jump resolves taken in EX - otherwise
-    // the wrong-path instruction fetched right after the branch would execute.
+
     assign bubble_id_ex = bubble_from_hazard | flush_if_id;
 
-    // ============================ ID/EX =====================================
+
     wire RegWrite_ex, ALUSrc_ex, MemRead_ex, MemWrite_ex, Branch_ex, Jump_ex, Jalr_ex;
     wire [1:0] ALUSrcA_ex, MemtoReg_ex, ALUOp_ex;
     wire [31:0] pc_ex, pcplus4_ex, read_data1_ex, read_data2_ex, imm_ex;
@@ -139,7 +132,7 @@ module riscv_pipeline_top #(
     assign ID_EX_MemRead_probe = MemRead_ex;
     assign ID_EX_Rd_probe      = rd_ex;
 
-    // ============================ EX stage ==================================
+   
     wire [31:0] ex_mem_aluresult_probe, mem_wb_aluresult_probe, mem_wb_wbdata_probe;
     wire        ex_mem_regwrite_probe, mem_wb_regwrite_probe;
     wire [4:0]  ex_mem_rd_probe, mem_wb_rd_probe;
@@ -180,9 +173,9 @@ module riscv_pipeline_top #(
         .Result(alu_result), .Zero(alu_zero), .eq(cmp_eq), .lt(cmp_lt), .ltu(cmp_ltu)
     );
 
-    // branch/jump target adder: PC(ID/EX) + imm
+  
     adder u_branch_adder (.a(pc_ex), .b(imm_ex), .out(branch_target));
-    // jalr target: (rs1+imm) with LSB cleared -> alu_result already = rs1+imm for jalr
+    
     assign jalr_target = {alu_result[31:1], 1'b0};
 
     branch_unit u_branch (
@@ -191,7 +184,7 @@ module riscv_pipeline_top #(
         .branch_taken(), .PCSrc(PCSrc)
     );
 
-    // ============================ EX/MEM ====================================
+  
     wire RegWrite_mem, MemRead_mem, MemWrite_mem;
     wire [1:0] MemtoReg_mem;
     wire [31:0] aluresult_mem, writedata_mem, pcplus4_mem;
@@ -213,7 +206,7 @@ module riscv_pipeline_top #(
     assign ex_mem_regwrite_probe  = RegWrite_mem;
     assign ex_mem_rd_probe        = rd_mem;
 
-    // ============================ MEM stage =================================
+   
     wire [31:0] read_data_mem;
     data_memory u_dmem (
         .clk(clk), .MemRead(MemRead_mem), .MemWrite(MemWrite_mem),
@@ -221,7 +214,7 @@ module riscv_pipeline_top #(
         .Read_Data(read_data_mem)
     );
 
-    // ============================ MEM/WB ====================================
+    
     wire [1:0] MemtoReg_wb2;
     wire [31:0] aluresult_wb, readdata_wb, pcplus4_wb;
 
