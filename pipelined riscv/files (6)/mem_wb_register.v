@@ -1,0 +1,40 @@
+`timescale 1ns/1ps
+// ============================================================
+// MEM/WB pipeline register
+// ============================================================
+module mem_wb_register (
+    input  wire        clk,
+    input  wire        reset,
+
+    input  wire        RegWrite_in,
+    input  wire [1:0]  MemtoReg_in,
+    input  wire [31:0] ALUResult_in,
+    input  wire [31:0] ReadData_in,
+    input  wire [31:0] PCPlus4_in,
+    input  wire [4:0]  Rd_in,
+
+    output reg          RegWrite_out,
+    output reg  [1:0]   MemtoReg_out,
+    output reg  [31:0]  ALUResult_out,
+    output reg  [31:0]  ReadData_out,
+    output reg  [31:0]  PCPlus4_out,
+    output reg  [4:0]   Rd_out
+);
+    always @(posedge clk or posedge reset) begin
+        if (reset) begin
+            RegWrite_out  <= 1'b0;
+            MemtoReg_out  <= 2'b0;
+            ALUResult_out <= 32'h0;
+            ReadData_out  <= 32'h0;
+            PCPlus4_out   <= 32'h0;
+            Rd_out        <= 5'b0;
+        end else begin
+            RegWrite_out  <= RegWrite_in;
+            MemtoReg_out  <= MemtoReg_in;
+            ALUResult_out <= ALUResult_in;
+            ReadData_out  <= ReadData_in;
+            PCPlus4_out   <= PCPlus4_in;
+            Rd_out        <= Rd_in;
+        end
+    end
+endmodule
