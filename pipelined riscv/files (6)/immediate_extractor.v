@@ -1,8 +1,6 @@
 `timescale 1ns/1ps
 `include "defines.vh"
-// ============================================================
-// Immediate_Data_Extractor (ID stage, combinational)
-// ============================================================
+
 module immediate_extractor (
     input  wire [31:0] instruction,
     input  wire [2:0]  ImmSrc,
