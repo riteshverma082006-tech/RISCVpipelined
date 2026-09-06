@@ -1,9 +1,6 @@
 `timescale 1ns/1ps
 `include "defines.vh"
-// ============================================================
-// Forwarding_Unit (EX stage, combinational)
-//   Prioritizes EX/MEM (most recent) over MEM/WB.
-// ============================================================
+
 module forwarding_unit (
     input  wire [4:0] ID_EX_Rs1,
     input  wire [4:0] ID_EX_Rs2,
