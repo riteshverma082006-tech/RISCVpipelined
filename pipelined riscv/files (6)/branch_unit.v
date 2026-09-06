@@ -1,10 +1,6 @@
 `timescale 1ns/1ps
 `include "defines.vh"
-// ============================================================
-// Branch_Unit (EX stage, combinational)
-//   Determines branch_taken from funct3 + comparator flags, and
-//   builds the overall PCSrc select for the fetch-stage mux.
-// ============================================================
+
 module branch_unit (
     input  wire       Branch,
     input  wire       Jump,
