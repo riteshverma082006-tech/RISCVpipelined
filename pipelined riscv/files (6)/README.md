@@ -75,7 +75,7 @@ onto this structure if you need them later.
 
 ## How to simulate
 
-Requires [Icarus Verilog](http://iverilog.icarus.com/) (`apt install iverilog`).
+Requires [Icarus Verilog](http://iverilog.icarus.com/) 
 
 ```bash
 iverilog -g2012 -o sim.out defines.vh pc_unit.v instruction_memory.v \
@@ -94,18 +94,3 @@ Three testbenches are included:
 - `tb_riscv_pipeline3.v` (+ `program3.hex`) — signed/unsigned byte loads
   (`lb`/`lbu`), and `bne`/`blt`/`bge` both taken and not-taken.
 
-Swap the last file in the compile line and the `.hex` referenced by
-`riscv_pipeline_top`'s `IMEM_INIT_FILE` parameter to run each one, or write
-your own `.hex` (one 8-digit hex instruction word per line) and instantiate
-`riscv_pipeline_top #(.IMEM_INIT_FILE("your_program.hex")) dut (...)`.
-
-## Notes for real use
-
-- Instruction memory is a simple synchronous ROM (`$readmemh`); data memory is
-  byte-addressable with combinational reads / registered writes. Swap these
-  for real memory macros / caches for an ASIC or FPGA target.
-- No exceptions/interrupts are implemented.
-- Branches are resolved in EX (not ID), which is simpler to get correct but
-  costs a 2-cycle misprediction penalty instead of 1. If you want a 1-cycle
-  penalty, move the comparator + branch-target adder into ID and add the
-  extra ID-stage forwarding paths that requires.
