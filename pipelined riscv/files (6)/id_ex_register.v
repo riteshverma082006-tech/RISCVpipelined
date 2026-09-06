@@ -1,8 +1,5 @@
 `timescale 1ns/1ps
-// ============================================================
-// ID/EX pipeline register
-//   bubble -> zero out the control signals (inserts a NOP into EX)
-// ============================================================
+
 module id_ex_register (
     input  wire        clk,
     input  wire        reset,
