@@ -1,10 +1,5 @@
 `timescale 1ns/1ps
 `include "defines.vh"
-// ============================================================
-// ALU (EX stage, combinational)
-//   Also produces eq/lt/ltu comparator flags directly from a,b so
-//   branch resolution does not depend on ALUCtrl decoding.
-// ============================================================
 module alu (
     input  wire [31:0] a,
     input  wire [31:0] b,
@@ -12,8 +7,8 @@ module alu (
     output reg  [31:0] Result,
     output wire         Zero,
     output wire         eq,
-    output wire         lt,     // signed a < b
-    output wire         ltu     // unsigned a < b
+    output wire         lt,    
+    output wire         ltu     
 );
     always @(*) begin
         case (ALUCtrl)
