@@ -1,7 +1,5 @@
 `timescale 1ns/1ps
-// ============================================================
-// Instruction_Parser (ID stage, combinational)
-// ============================================================
+
 module instruction_parser (
     input  wire [31:0] instruction,
     output wire [6:0]  opcode,
