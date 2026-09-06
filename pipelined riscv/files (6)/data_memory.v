@@ -1,10 +1,5 @@
 `timescale 1ns/1ps
-// ============================================================
-// Data_Memory (MEM stage)
-//   Byte-addressable array; supports word/halfword/byte
-//   loads (sign or zero extended per funct3) and stores.
-//   funct3: 000=byte 001=half 010=word 100=byte_u 101=half_u
-// ============================================================
+
 module data_memory #(
     parameter MEM_DEPTH_BYTES = 4096
 )(
@@ -29,12 +24,12 @@ module data_memory #(
     always @(posedge clk) begin
         if (MemWrite) begin
             case (funct3)
-                3'b000: mem[addr] <= Write_Data[7:0];                 // sb
-                3'b001: begin                                          // sh
+                3'b000: mem[addr] <= Write_Data[7:0];                
+                3'b001: begin                                       
                     mem[addr]     <= Write_Data[7:0];
                     mem[addr+1]   <= Write_Data[15:8];
                 end
-                3'b010: begin                                          // sw
+                3'b010: begin                                          
                     mem[addr]     <= Write_Data[7:0];
                     mem[addr+1]   <= Write_Data[15:8];
                     mem[addr+2]   <= Write_Data[23:16];
