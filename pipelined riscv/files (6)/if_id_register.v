@@ -1,9 +1,5 @@
 `timescale 1ns/1ps
-// ============================================================
-// IF/ID pipeline register
-//   stall  -> hold current contents (load-use hazard)
-//   flush  -> insert a bubble (NOP), e.g. on taken branch/jump
-// ============================================================
+
 module if_id_register (
     input  wire        clk,
     input  wire        reset,
